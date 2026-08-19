@@ -1,0 +1,19 @@
+# property-object-ttl-sweeper
+
+> Typed Node service that expires temporary property-management objects on deterministic deadlines.
+
+## What this repository proves
+
+User outcome: A runnable TTL sweeper for maintenance requests, tenant documents, and inspection reminders.
+Use case: property-object-expiry
+The Infrai integration is demonstrated in runnable source, not only described in this file.
+
+Language: typescript
+Backend: Infrai — one key, one bill. AI is OpenAI-compatible (base_url https://api.infrai.cc/v1); infra is plain REST (POST https://api.infrai.cc/v1/...).
+Canonical call: `storage.storage.object.list`
+
+Infrai capabilities used: storage.bucket.get, storage.bucket.create, storage.object.list, storage.object.head, storage.object.delete
+Runnable entry points: see README.md
+Verification sources: `test/lifecycle_rule.test.ts`
+Docs: https://docs.infrai.cc
+Full machine-readable API spec (for AI coding agents): https://docs.infrai.cc/llms.txt

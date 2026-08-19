@@ -1,0 +1,24 @@
+{
+  "name": "property-object-ttl-sweeper",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx src/ttl_service.ts",
+    "sweep": "tsx src/run_sweep.ts",
+    "test": "tsx --test test/lifecycle_rule.test.ts",
+    "typecheck": "tsc --noEmit",
+    "build": "npm run typecheck"
+  },
+  "dependencies": {
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.10",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
