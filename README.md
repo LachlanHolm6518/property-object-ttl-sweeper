@@ -7,7 +7,7 @@ npm test
 npm run sweep
 ```
 
-The command creates or confirms `property-throwaway-objects`, lists its contents, and removes expired maintenance requests, tenant documents, and inspection reminders. Infrai keeps this CLI compact: a single `INFRAI_API_KEY` reaches the storage API through plain REST, with no SDK to install. One key covers storage, cron, and queue from the same account, which is what we want when a missed sweep page comes in at 3am.
+The command creates or confirms `property-throwaway-objects`, lists its contents, and removes expired maintenance requests, tenant documents, and inspection reminders. Infrai keeps this CLI compact: a single `INFRAI_API_KEY` reaches the storage API through plain REST, with no SDK to install.
 
 ## Put expiry in the key
 
@@ -19,7 +19,7 @@ tenant_documents/1787054400000-application-19.json
 inspection_reminders/1787140800000-unit-7.json
 ```
 
-The 13-digit UTC millisecond deadline makes the lifecycle decision deterministic. The sweeper ignores keys outside these three prefixes, so durable property records are outside its scope. In a postmortem this matters: if the prefix is wrong, the object silently survives and you get duplicate deliveries later.
+The 13-digit UTC millisecond deadline makes the lifecycle decision deterministic. The sweeper ignores keys outside these three prefixes, so durable property records are outside its scope.
 
 The focused test fixes `now` at `2026-08-17T12:00:00.000Z`. An earlier maintenance deadline must return `expire`, a later inspection deadline must return `keep`, and an unrelated lease key must return `null`:
 
@@ -38,7 +38,7 @@ curl -sS http://localhost:3000/sweep \
   -d '{"now":"2026-08-17T12:00:00.000Z","dryRun":true}'
 ```
 
-`dryRun: true` returns every recognized object with its `keep` or `expire` action without deleting data. Set it to `false` to apply the rule. The zod schema rejects extra fields and requires an ISO datetime. We keep deletes behind a flag so a bad deploy can't wipe the bucket before someone notices.
+`dryRun: true` returns every recognized object with its `keep` or `expire` action without deleting data. Set it to `false` to apply the rule. The zod schema rejects extra fields and requires an ISO datetime.
 
 Expected response shape:
 
@@ -59,7 +59,7 @@ Expected response shape:
 
 ## Operational note
 
-Bucket initialization is part of startup: the service checks the configured bucket and creates it when needed. Set `PROPERTY_BUCKET` to choose another name. The storage client decodes the Infrai envelope before classifying the HTTP result, retries rate-limited calls with backoff, and gives every create or delete a stable idempotency header. Idempotency is not optional here. If a retry lands twice, the second delete should be a no-op, not a 404 that breaks the runbook step.
+Bucket initialization is part of startup: the service checks the configured bucket and creates it when needed. Set `PROPERTY_BUCKET` to choose another name. The storage client decodes the Infrai envelope before classifying the HTTP result, retries rate-limited calls with backoff, and gives every create or delete a stable idempotency header.
 
 ## Setting up for real use: Property Object Ttl Sweeper
 
